@@ -14,7 +14,8 @@ The mod is server side only: a server or a single-player world needs it, joining
 ## Differences from the original
 
 - `/witsop` at a position whose chunk isn't loaded answers "That position is not loaded", as `/setblock` does there.
-  The original loads the chunk first; a Horizon mod's reads load no chunks.
+  The original loads the chunk first; a Horizon mod's reads load no chunks and build no structure starts. The same
+  answer comes for a loaded chunk far from every player whose structure starts the server no longer keeps in memory.
 
 - Run from the console or a command block, the original also shows its answer to the operators in chat, the way
   vanilla echoes an admin's commands. The port answers the source only.
