@@ -1,0 +1,15 @@
+[package]
+name = "wits"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[dependencies]
+# While LevelRef::structures_at (horizon-rust/horizon#18505) is unreleased, the mod builds inside a
+# Horizon checkout that has it, from `.local/dev-mods/wits` (see README.md); once a Nightly has it,
+# this becomes the pinned SDK path `cargo horizon-mod` writes.
+horizon-mod-api = { path = "../../../crates/horizon-mod-api" }
+
+# A mod is its own project, not a member of the game's workspace.
+[workspace]
