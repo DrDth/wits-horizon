@@ -39,7 +39,15 @@ fn list_structures_at_spot(
     pos: [i32; 3],
     caller_position: bool,
 ) {
-    let structures = level.structures_at(host, pos).unwrap_or_default();
+    // The original loads the chunk (`startsForStructure` asks for it at STRUCTURE_REFERENCES);
+    // a mod's reads load none, so an unloaded spot answers as `/setblock` does there.
+    let Some(structures) = level.structures_at(host, pos) else {
+        let mut red = TextStyle::default();
+        red.color = Some("red".to_owned());
+        let line = Text::translate("argument.pos.unloaded", Vec::new()).with_style(red);
+        let _ = host.commands().feedback(line);
+        return;
+    };
     let line = if structures.is_empty() {
         Text::literal(if caller_position {
             "There's no structures at your location."
