@@ -41,7 +41,12 @@ fn list_structures_at_spot(
 ) {
     // The original loads the chunk (`startsForStructure` asks for it at STRUCTURE_REFERENCES);
     // a mod's reads load none, so an unloaded spot answers as `/setblock` does there.
-    let Some(structures) = level.structures_at(host, pos) else {
+    // The original lists the starts whose box holds the spot (`getBoundingBox().isInside`), not
+    // the ones only a placed piece reaches.
+    let Some(structures) = level
+        .structures_at(host, pos)
+        .map(|found| found.into_iter().filter(|s| s.in_box).collect::<Vec<_>>())
+    else {
         let mut red = TextStyle::default();
         red.color = Some("red".to_owned());
         let line = Text::translate("argument.pos.unloaded", Vec::new()).with_style(red);
